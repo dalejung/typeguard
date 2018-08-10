@@ -362,6 +362,15 @@ class TestCheckArgumentTypes:
 
         foo(*values)
 
+    @pytest.mark.xfail(reason="TypeVar uses `in` for constraint check")
+    def test_typevar_constraints_typing_type(self):
+        T = TypeVar('T', int, Collection)
+
+        def foo(a: T, b: T):
+            assert check_argument_types()
+
+        foo([1, 2], 'bb')
+
     def test_typevar_constraints_fail_typing_type(self):
         T = TypeVar('T', int, Collection)
 
